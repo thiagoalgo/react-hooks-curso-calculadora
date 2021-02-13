@@ -1,17 +1,35 @@
 import './Calculadora.css';
 import { Jumbotron, Container, Row, Col, Button, Form } from 'react-bootstrap'
 import { useState } from 'react'
+import CalculadoraService from './CalculadoraService'
 
 function Calculadora() {
 
   const [txtNumero, setTxtNumero] = useState('0')
+  const [num1, setNum1] = useState('0')
+  const [num2, setNum2] = useState(null)
+  const [op, setOp] = useState(null)
+  const [
+    calcular,
+    concatenar,
+    ADICAO,
+    SUBTRACAO,
+    MULTIPLICACAO,
+    DIVISAO
+  ] = CalculadoraService()
 
   function adicionarNumero(numero) {
-    if (txtNumero === '0') {
-      setTxtNumero(numero)
+    let result
+    
+    if (op === null) {
+      result = concatenar(num1, numero)
+      setNum1(result)
     } else {
-      setTxtNumero(txtNumero + numero)
+      result = concatenar(num2, numero)
+      setNum2(result)
     }
+
+    setTxtNumero(result)
   }
 
   function definirOperacao(op) {
@@ -99,7 +117,8 @@ function Calculadora() {
               onClick={() => adicionarNumero('0')}>0</Button>
           </Col>
           <Col xs="3">
-            <Button variant="light">.</Button>
+            <Button variant="light"
+              onClick={() => adicionarNumero('.')}>.</Button>
           </Col>
           <Col xs="3">
             <Button variant="success">=</Button>

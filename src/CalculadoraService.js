@@ -21,7 +21,7 @@ function CalculadoraService() {
 
     function concatenar(numAtual, numConcat) {
         if (numAtual === '0' || numAtual === null) {
-            return numConcat
+            numAtual = ''
         }
         
         if (numConcat === '.' && numAtual === '') {
