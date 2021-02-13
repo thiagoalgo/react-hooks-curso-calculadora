@@ -8,7 +8,7 @@ function Calculadora() {
   const [txtNumero, setTxtNumero] = useState('0')
   const [num1, setNum1] = useState('0')
   const [num2, setNum2] = useState(null)
-  const [op, setOp] = useState(null)
+  const [operacao, setOperacao] = useState(null)
   const [
     calcular,
     concatenar,
@@ -18,10 +18,17 @@ function Calculadora() {
     DIVISAO
   ] = CalculadoraService()
 
+  function limpar() {
+    setTxtNumero('0')
+    setNum1('0')
+    setNum2(null)
+    setOperacao(null)
+  }
+
   function adicionarNumero(numero) {
     let result
-    
-    if (op === null) {
+
+    if (operacao === null) {
       result = concatenar(num1, numero)
       setNum1(result)
     } else {
@@ -33,7 +40,29 @@ function Calculadora() {
   }
 
   function definirOperacao(op) {
-    setTxtNumero(op)
+    if (operacao === null) {
+      setNum1(txtNumero)
+      setOperacao(op)
+      return
+    }
+
+    if (num2 !== null) {
+      const result = calcular(parseFloat(num1), parseFloat(num2), operacao)
+      setTxtNumero(result.toString())
+      setOperacao(op)
+      setNum1(result.toString())
+      setNum2(null)
+    }
+  }
+
+  function igual() {
+    if (num2 !== null) {
+      const result = calcular(parseFloat(num1), parseFloat(num2), operacao)
+      setTxtNumero(result.toString())
+      setOperacao(null)
+      setNum1(result.toString())
+      setNum2(null)
+    }
   }
 
   return (
@@ -47,7 +76,8 @@ function Calculadora() {
       <Container>
         <Row>
           <Col xs="3">
-            <Button variant="danger">C</Button>
+            <Button variant="danger"
+              onClick={() => limpar()}>C</Button>
           </Col>
           <Col xs="9">
             <Form.Control type="text"
@@ -72,7 +102,7 @@ function Calculadora() {
           </Col>
           <Col xs="3">
             <Button variant="warning"
-              onClick={() => definirOperacao('/')}>/</Button>
+              onClick={() => definirOperacao(DIVISAO)}>/</Button>
           </Col>
         </Row>
         <Row>
@@ -90,7 +120,7 @@ function Calculadora() {
           </Col>
           <Col xs="3">
             <Button variant="warning"
-              onClick={() => definirOperacao('*')}>*</Button>
+              onClick={() => definirOperacao(MULTIPLICACAO)}>*</Button>
           </Col>
         </Row>
         <Row>
@@ -108,7 +138,7 @@ function Calculadora() {
           </Col>
           <Col xs="3">
             <Button variant="warning"
-              onClick={() => definirOperacao('-')}>-</Button>
+              onClick={() => definirOperacao(SUBTRACAO)}>-</Button>
           </Col>
         </Row>
         <Row>
@@ -121,11 +151,12 @@ function Calculadora() {
               onClick={() => adicionarNumero('.')}>.</Button>
           </Col>
           <Col xs="3">
-            <Button variant="success">=</Button>
+            <Button variant="success"
+              onClick={() => igual()}>=</Button>
           </Col>
           <Col xs="3">
             <Button variant="warning"
-              onClick={() => definirOperacao('+')}>+</Button>
+              onClick={() => definirOperacao(ADICAO)}>+</Button>
           </Col>
         </Row>
       </Container>
