@@ -1,5 +1,3 @@
-import React from 'react'
-import ReactDOM from 'react'
 import CalculadoraService from './CalculadoraService'
 
 describe('Teste do Calculadora Service', () => {

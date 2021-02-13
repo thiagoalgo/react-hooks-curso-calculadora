@@ -84,7 +84,8 @@ function Calculadora() {
               name="txtNumero"
               className="text-right"
               readOnly="readOnly"
-              value={txtNumero} />
+              value={txtNumero} 
+              data-testid="txtNumero"/>
           </Col>
         </Row>
         <Row>
